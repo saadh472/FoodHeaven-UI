@@ -172,13 +172,13 @@
 
         <!-- Form to Change Shift Time -->
         <div class="form-container">
-            <input type="text" id="startTime" placeholder="Start Time (HH:MM)">
-            <input type="text" id="endTime" placeholder="End Time (HH:MM)">
+            <input type="time" id="startTime" aria-label="Start time">
+            <input type="time" id="endTime" aria-label="End time">
             <button onclick="changeShiftTime()">Update Shift</button>
         </div>
 
         <!-- Back to Dashboard Button -->
-        <a href="file:///G:/saad/Saad/university work/semester 3/DATABASE/project/Interface/interface.html">
+        <a href="../interface.html">
             <button class="back-btn">Back to Dashboard</button>
         </a>
     </div>
@@ -206,7 +206,7 @@
                     <td>${row.shiftName}</td>
                     <td>${row.startTime}</td>
                     <td>${row.endTime}</td>
-                    <td><button onclick="editShift('${row.shiftName}', '${row.startTime}', '${row.endTime}')">Edit</button></td>
+                    <td><button onclick="editShift('${row.empId}')">Edit</button></td>
                 `;
                 tableBody.appendChild(tr);
             });
@@ -214,10 +214,9 @@
 
         // Function to search employee shift by ID
         function searchShift() {
-            const empId = document.getElementById('employeeId').value;
-            const filteredData = shiftData.filter(record => record.empId === empId);
+            const empId = document.getElementById('employeeId').value.trim().toLowerCase();
+            const filteredData = shiftData.filter(record => record.empId.toLowerCase().includes(empId));
             if (filteredData.length > 0) {
-                currentEmployeeId = empId; // Store the employee ID for shift change
                 displayShifts(filteredData);
             } else {
                 alert('Employee ID not found.');
@@ -225,9 +224,12 @@
         }
 
         // Function to edit shift time
-        function editShift(shiftName, startTime, endTime) {
-            document.getElementById('startTime').value = startTime;
-            document.getElementById('endTime').value = endTime;
+        function editShift(employeeId) {
+            const employee = shiftData.find(row => row.empId === employeeId);
+            if (!employee) return;
+            currentEmployeeId = employeeId;
+            document.getElementById('startTime').value = employee.startTime;
+            document.getElementById('endTime').value = employee.endTime;
         }
 
         // Function to change shift time
@@ -235,13 +237,18 @@
             const startTime = document.getElementById('startTime').value;
             const endTime = document.getElementById('endTime').value;
 
-            if (startTime && endTime) {
-                alert(`Shift for employee ${currentEmployeeId} updated from ${startTime} to ${endTime}`);
-                // You would typically make an API call to update the shift in the database here.
+            const employee = shiftData.find(row => row.empId === currentEmployeeId);
+            if (employee && /^([01]\d|2[0-3]):[0-5]\d$/.test(startTime) && /^([01]\d|2[0-3]):[0-5]\d$/.test(endTime)) {
+                employee.startTime = startTime;
+                employee.endTime = endTime;
+                displayShifts(shiftData);
+                alert('Updated in this browser session. Reloading restores the sample shifts.');
             } else {
-                alert('Please enter valid start and end times.');
+                alert('Select Edit for an employee, then enter valid start and end times.');
             }
         }
+
+        displayShifts(shiftData);
 
     </script>
 

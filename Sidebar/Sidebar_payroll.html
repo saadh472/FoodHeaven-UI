@@ -155,7 +155,7 @@
 <body>
     <div class="navbar">
         <span>Food Heaven Payroll Management</span>
-        <a href="file:///G:/saad/Saad/university work/semester 3/DATABASE/project/Interface/interface.html"><button>Back to Dashboard</button></a>
+        <a href="../interface.html"><button>Back to Dashboard</button></a>
     </div>
 
     <div class="container">
@@ -217,6 +217,8 @@
             { id: 4, name: 'Emily Davis', salary: 70000 },
         ];
 
+        let selectedEmployeeId = null;
+
         // Display employee table dynamically
         function loadEmployeeTable() {
             const tableBody = document.getElementById('employeeTable').getElementsByTagName('tbody')[0];
@@ -237,6 +239,7 @@
         function showSalaryForm(empId) {
             const employee = employeeData.find(emp => emp.id === empId);
             if (employee) {
+                selectedEmployeeId = employee.id;
                 document.getElementById('empName').value = employee.name;
                 document.getElementById('currentSalary').value = employee.salary;
                 document.getElementById('salaryFormContainer').style.display = 'block';
@@ -270,16 +273,19 @@
 
         // Update salary
         function updateSalary() {
-            const empId = employeeData.find(emp => emp.name === document.getElementById('empName').value).id;
-            const increaseSalary = document.getElementById('increaseSalary').value;
-            const decreaseSalary = document.getElementById('decreaseSalary').value;
-
-            if (empId) {
-                alert(`Updated salary for Employee ID: ${empId} with an increase of ${increaseSalary} and decrease of ${decreaseSalary}`);
-                // Send the data to the server to update the database
-            } else {
-                alert('Employee not found.');
+            const employee = employeeData.find(emp => emp.id === selectedEmployeeId);
+            const increase = Number(document.getElementById('increaseSalary').value || 0);
+            const decrease = Number(document.getElementById('decreaseSalary').value || 0);
+            if (!employee) return;
+            const salary = employee.salary + increase - decrease;
+            if (!Number.isFinite(increase) || !Number.isFinite(decrease) || increase < 0 || decrease < 0 || salary < 0 || salary > 100000) {
+                alert('Enter positive adjustments that keep the salary between 0 and 100000.');
+                return;
             }
+            employee.salary = Math.round(salary * 100) / 100;
+            loadEmployeeTable();
+            document.getElementById('salaryFormContainer').style.display = 'none';
+            alert('Updated in this browser session. Reloading restores the sample salaries.');
         }
 
         // Initial load of the employee table

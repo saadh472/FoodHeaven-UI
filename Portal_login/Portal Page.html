@@ -150,61 +150,16 @@
             <img src="Logo.png" alt="Employee Portal Logo"> <!-- Updated logo here -->
         </div>
         <h1>Employee Portal</h1>
-        <form action="#" method="POST">
-            <div class="form-group">
-                <label for="employee-id">Employee ID</label>
-                <input type="text" id="employee-id" name="employee-id" placeholder="Enter your Employee ID" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                <span id="toggle-password">Show</span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Login">
-            </div>
+        <form action="../interface.html" method="GET">
+            <p>Open the employee portal with sample data and explore the demo workflows.</p>
+            <div class="form-group"><input type="submit" value="Open Demo Dashboard"></div>
         </form>
         <div class="additional-links">
             <a href="Forget password.html">Forgot Password?</a>
         </div>
     </div>
 
-    <script>
-        // Password toggle functionality
-        const passwordInput = document.getElementById('password');
-        const togglePassword = document.getElementById('toggle-password');
 
-        togglePassword.addEventListener('click', () => {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            togglePassword.textContent = type === 'password' ? 'Show' : 'Hide';
-        });
-
-        // Focus animation for input fields
-        const inputs = document.querySelectorAll('input[type="text"], input[type="password"]');
-
-        inputs.forEach(input => {
-            input.addEventListener('focus', (e) => {
-                e.target.style.outline = 'none';
-                e.target.style.borderColor = '#ff9966';
-            });
-
-            input.addEventListener('blur', (e) => {
-                e.target.style.borderColor = '';
-            });
-        });
-
-        // Submit button click animation
-        const submitButton = document.querySelector('input[type="submit"]');
-        submitButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            submitButton.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                submitButton.style.transform = 'scale(1)';
-            }, 150);
-            alert('Login functionality is not implemented yet!');
-        });
-    </script>
 </body>
 </html>
 

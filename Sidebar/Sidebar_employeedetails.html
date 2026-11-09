@@ -188,9 +188,10 @@
     <div class="main-content">
         <div class="header">
             <h1>Employee Details</h1>
+            <p id="directoryStatus" role="status">Loading employee directory…</p>
             <div class="search-container">
                 <input type="text" id="searchInput" placeholder="Search by Employee Name or ID" oninput="searchEmployees()">
-                <button>Search</button>
+                <button type="button" onclick="searchEmployees()">Search</button>
             </div>
         </div>
 
@@ -223,144 +224,17 @@
             <input type="text" id="address" placeholder="Employee Address">
             <input type="date" id="hireDate" placeholder="Hire Date">
             <input type="date" id="dob" placeholder="Date of Birth">
-            <button onclick="addEmployee()">Add Employee</button>
+            <button id="saveEmployee" type="button" onclick="addEmployee()">Add Employee</button>
+            <button type="button" onclick="clearEmployeeForm()">Clear form</button>
         </div>
 
         <!-- Back Button -->
-        <a href="file:///G:/saad/Saad/university work/semester 3/DATABASE/project/Interface/interface.html">
+        <a href="../interface.html">
             <button class="back-btn">Back to Dashboard</button>
         </a>
     </div>
 
-    <script>
-        /* const employeeData = 
-        [
-            { empId: 'E001', empName: 'John Doe', contactNo: '1234567890', email: 'john.doe@example.com', address: '123 Main St', hireDate: '2023-01-01', dob: '1990-05-15' },
-            { empId: 'E002', empName: 'Jane Smith', contactNo: '0987654321', email: 'jane.smith@example.com', address: '456 Oak St', hireDate: '2022-06-01', dob: '1988-02-20' },
-            { empId: 'E003', empName: 'Michael Johnson', contactNo: '1122334455', email: 'michael.johnson@example.com', address: '789 Pine St', hireDate: '2021-07-15', dob: '1985-09-25' }
-        ]; */
-        employeeData=[];
-        function displayEmployees(data) {
-            const tableBody = document.getElementById('employeeTable').getElementsByTagName('tbody')[0];
-            tableBody.innerHTML = '';
-
-            data.forEach(row => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${row.EmployeeID}</td>
-                    <td>${row.EmployeeName}</td>
-                    <td>${row.ContactNo}</td>
-                    <td>${row.EmailID}</td>
-                    <td>${row.Address}</td>
-                    <td>${row.HireDate}</td>
-                    <td>${row.DateOfBirth}</td>
-                    <td>
-                        <button onclick="editEmployee('${row.EmployeeID}')">Edit</button>
-                        <button onclick="removeEmployee('${row.EmployeeID}')">Remove</button>
-                    </td>
-                `;
-                tableBody.appendChild(tr);
-            });
-        }
-
-        async function fetchEmployees() {
-            try {
-                const response = await fetch('http://127.0.0.1:5000/employees');
-                const data = await response.json();
-                employeeData = data;
-                displayEmployees(employeeData);
-            } catch (error) {
-                console.error('Error fetching employees:', error);
-            }
-        }
-
-        // Function to display employees in the table
-        function displayEmployees(data) {
-            const tableBody = document.getElementById('employeeTable').getElementsByTagName('tbody')[0];
-            tableBody.innerHTML = '';  // Clear the current data
-
-            data.forEach(employee => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${employee.EmployeeID}</td>
-                    <td>${employee.EmployeeName}</td>
-                    <td>${employee.ContactNo}</td>
-                    <td>${employee.EmailID}</td>
-                    <td>${employee.Address}</td>
-                    <td>${employee.HireDate}</td>
-                    <td>${employee.DateOfBirth}</td>
-                    <td>
-                        <button onclick="editEmployee('${employee.EmployeeID}')">Edit</button>
-                        <button onclick="removeEmployee('${employee.EmployeeID}')">Remove</button>
-                    </td>
-                `;
-                tableBody.appendChild(tr);
-            });
-        }
-
-        // Initialize the employee data on page load
-        window.onload = fetchEmployees;
-        function addEmployee() {
-            const empId = document.getElementById('empId').value;
-            const empName = document.getElementById('empName').value;
-            const contactNo = document.getElementById('contactNo').value;
-            const email = document.getElementById('email').value;
-            const address = document.getElementById('address').value;
-            const hireDate = document.getElementById('hireDate').value;
-            const dob = document.getElementById('dob').value;
-
-            if (empId && empName && contactNo && email && address && hireDate && dob) {
-                employeeData.push({ empId, empName, contactNo, email, address, hireDate, dob });
-
-                document.getElementById('empId').value = '';
-                document.getElementById('empName').value = '';
-                document.getElementById('contactNo').value = '';
-                document.getElementById('email').value = '';
-                document.getElementById('address').value = '';
-                document.getElementById('hireDate').value = '';
-                document.getElementById('dob').value = '';
-
-                displayEmployees(employeeData);
-                alert('Employee added successfully');
-            } else {
-                alert('Please fill all fields');
-            }
-        }
-
-        function editEmployee(empId) {
-            const employee = employeeData.find(e => e.empId === empId);
-            if (employee) {
-                document.getElementById('empId').value = employee.empId;
-                document.getElementById('empName').value = employee.empName;
-                document.getElementById('contactNo').value = employee.contactNo;
-                document.getElementById('email').value = employee.email;
-                document.getElementById('address').value = employee.address;
-                document.getElementById('hireDate').value = employee.hireDate;
-                document.getElementById('dob').value = employee.dob;
-            }
-        }
-
-        function removeEmployee(empId) {
-            console.log('going to remove!');
-            const employeeIndex = employeeData.findIndex(e => e.EmployeeID == empId);
-            if (employeeIndex != -1) {
-                employeeData.splice(employeeIndex, 1);
-                displayEmployees(employeeData);
-                alert('Employee removed successfully');
-            }
-        }
-
-        function searchEmployees() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filteredData = employeeData.filter(employee =>
-                employee.EmployeeID.toString().includes(query) ||
-                employee.EmployeeName.toLowerCase().includes(query)
-            );
-            displayEmployees(filteredData);
-        }
-
-        displayEmployees(employeeData);
-    </script>
+    <script src="employees.js"></script>
 </body>
 </html>
 
